@@ -15,3 +15,5 @@ Netplan Reference: https://netplan.io/reference/
 Netplan Tutorial: https://linuxconfig.org/netplan-network-configuration-tutorial-for-beginners
 
 Nós na network: https://stackoverflow.com/questions/65976880/how-to-connect-ros-nodes-to-topics-over-a-network
+
+Doc oficial: http://wiki.ros.org/ROS/Tutorials/MultipleMachines
