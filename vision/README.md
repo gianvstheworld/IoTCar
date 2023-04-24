@@ -1,3 +1,9 @@
+# Pacote de Visão Computacional a partir da raspcam
+
+## Imagem da rasp com ros
+
+link: https://learn.ubiquityrobotics.com/noetic_pi_image_downloads
+
 ## Tutorial de conexão da raspcam 
 
 link: https://olayasturias.github.io/ros/raspberry/picam/phdstuff/2020/07/25/rpi-cam-ros.html
