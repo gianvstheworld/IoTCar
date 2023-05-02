@@ -31,3 +31,7 @@ Rosbridge + VPN: https://answers.ros.org/question/355349/rosbridge-websocket-ser
 rosbridge online: https://answers.ros.org/question/270287/rosbridge-online/
 
 Nós na network (mesmo de cima): https://stackoverflow.com/questions/65976880/how-to-connect-ros-nodes-to-topics-over-a-network 
+
+### ROSLINK
+
+Roslink do fucking Anis Koubaa: https://www.youtube.com/watch?v=nPRlemvgu6I&ab_channel=AnisKoubaa
