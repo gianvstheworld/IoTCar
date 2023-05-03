@@ -23,84 +23,18 @@ body{
     width: 100%;
 }
 
-#topbar a{
+#topbar p{
     color: #FFFFFF;
-    float: right;
+    float: left;
     text-decoration: none;
     display: block;
     padding: 14px 16px;
     font-size: 18px;
     font-weight: 500;
 }
-#topbar a:hover{
+#topbar p:hover{
     color: #571B97;
     transition: 0.3s;
-}
-
-/*---------------------Right Bar------------------------*/
-
-#clover{
-    padding: 10px 0px 10px 0px;
-    position: relative;
-    top: 70px;
-    width: 300px;
-    background-color: #242424;
-    border-radius: 10px;
-    margin-right: 20px;
-
-    margin-top: 100px;
-}
-
-#swarm{
-    padding: 10px 0px 10px 0px;
-    position: relative;
-    top: 80px;
-    text-align: center;
-    color: #FFFFFF;
-    width: 300px;
-    background-color: #242424;
-    border-radius: 10px;
-    margin-right: 20px;
-}
-
-
-#topics{
-    background-color: #454545;
-    display: block;
-    padding: 0px 5px 0px 5px;
-    margin: 10px 10px 0px 10px;
-    text-align: center;
-}
-
-#head{
-    justify-content: space-between;
-    display: flex;
-    font-size: 14px;
-    color: #FFFFFF;
-    margin-bottom: 8px;
-}
-
-#head div{
-    color: black;
-    padding: 0px 20px 0px 20px;
-}
-
-#topics2{
-    display: block;
-    color: #FFFFFF;
-}
-
-#head2{
-    justify-content: space-between;
-    display: flex;
-    padding: 0px 50px 5px 50px;
-}
-
-#b2{
-    justify-content: space-between;
-    display: flex;
-    padding: 0px 40px 0px 40px;
-    min-width: 40px;
 }
 
 /*---------------------Left Bar------------------------*/
@@ -110,9 +44,9 @@ body{
     padding: 0px 0px 10px 0px;
     position: relative;
     margin-left: 20px;
-    top: 70px;
+    top: 140px;
     width: 300px;
-    height: 355px;
+    height: 200px;
     background-color: #242424;
     border-radius: 10px;
     
@@ -146,7 +80,7 @@ body{
 .arrows_box {
     left: 3%;
     right: 3%;
-    top: 55%;
+    top: 19%;
     bottom: 4%;
 }
 
