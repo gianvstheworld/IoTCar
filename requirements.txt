@@ -1,0 +1,6 @@
+cv_bridge==1.16.2
+opencv_contrib_python==4.6.0.66
+opencv_python==4.7.0.72
+opencv_python_headless==4.7.0.72
+rospy==1.16.0
+sensor_msgs==1.13.1
