@@ -2,13 +2,16 @@ import asyncio
 import json
 from rtcbot import Websocket, RTCConnection
 import logging
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
+
+from rtcbot import RTCConnection, getRTCBotJS, CVCamera
 
 conn = RTCConnection()
-
+camera = CVCamera()
+conn.video.putSubscription(camera)
 
 async def connect():
-    ws = Websocket("https://rtcbot.dev/tommaselli")
+    ws = Websocket("https://rtcbot.dev/tommaselli_test")
     await ws.onReady()
     if ws.error is not None:
         print("Had error", ws.error)
@@ -26,7 +29,7 @@ async def connect():
     if conn.error is not None:
         print("Had conn error", conn.error)
     print("\n\n\nConnection ready!\n\n\n")
-    conn.put_nowait("Hello!")
+    conn.put_nowait("Hello! 123")
 
 
 asyncio.ensure_future(connect())

@@ -1,17 +1,22 @@
 from aiohttp import web
+import asyncio
+import json
+from rtcbot import Websocket, RTCConnection
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 routes = web.RouteTableDef()
 
-from rtcbot import RTCConnection, getRTCBotJS
 from rtcbot import RTCConnection, getRTCBotJS, CVCamera
 
-# Initialize the camera
-camera = CVCamera()
-
-# For this example, we use just one global connection
 conn = RTCConnection()
 
-# Send images from the camera through the connection
+camera = CVCamera()
 conn.video.putSubscription(camera)
+
+@conn.subscribe
+def onMessage(m):
+    print("Key:", m)
 
 # Serve the RTCBot javascript library at /rtcbot.js
 @routes.get("/rtcbot.js")
@@ -21,10 +26,21 @@ async def rtcbotjs(request):
 
 # This sets up the connection
 @routes.post("/connect")
-async def connect(request):
-    clientOffer = await request.json()
-    serverResponse = await conn.getLocalDescription(clientOffer)
-    return web.json_response(serverResponse)
+async def connect():
+    ws = Websocket("https://rtcbot.dev/tommas")
+    remoteDescription = await ws.get()
+    robotDescription = await conn.getLocalDescription(remoteDescription)
+    ws.put_nowait(robotDescription)
+    await conn.onReady()
+
+    if conn.error is not None:
+        print("Had conn error", conn.error)
+    print("\n\n\nConnection ready!\n\n\n")
+    conn.put_nowait("Hello!")
+    
+    await ws.close()
+    print("Closed socket")
+
 
 @routes.get("/")
 async def index(request):
@@ -39,11 +55,12 @@ async def index(request):
         <body style="text-align: center;padding-top: 30px;">
             <video autoplay playsinline muted controls></video>
             <p>
-            tommaselli teste 123
+            tommaselli $$$$$$$$$$22222121dd
             Open the browser's developer tools to see console messages (CTRLSHIFTC)
             </p>
             <script>
                 var conn = new rtcbot.RTCConnection();
+                var kb = new rtcbot.Keyboard();
 
                 // When the video stream comes in, display it in the video element
                 conn.video.subscribe(function(stream) {
@@ -53,14 +70,14 @@ async def index(request):
                 async function connect() {
                     let offer = await conn.getLocalDescription();
 
-                    // POST the information to /connect
-                    let response = await fetch("/connect", {
+                    let response = await fetch("https://rtcbot.dev/tommas", {
                         method: "POST",
                         cache: "no-cache",
-                        body: JSON.stringify(offer)
+                        body: JSON.stringify(offer),
                     });
 
                     await conn.setRemoteDescription(await response.json());
+                    kb.subscribe(conn.put_nowait);
 
                     console.log("Ready!");
                 }
@@ -75,7 +92,9 @@ async def cleanup(app=None):
     await conn.close()
     camera.close() # Singletons like a camera are not awaited on close
 
-app = web.Application()
-app.add_routes(routes)
-app.on_shutdown.append(cleanup)
-web.run_app(app)
+# app = web.Application()
+# app.add_routes(routes)
+# app.on_shutdown.append(cleanup)
+# web.run_app(app)
+asyncio.ensure_future(connect())
+asyncio.get_event_loop().run_forever()

@@ -8,14 +8,15 @@ conn = RTCConnection()
 
 
 def callme(msg):
+    print(30*'-')
     print(msg)
-
+    print(30*'-')
 
 async def connect():
     localDescription = await conn.getLocalDescription()
     async with aiohttp.ClientSession() as session:
         async with session.post(
-            "https://rtcbot.dev/test1", data=json.dumps(localDescription)
+            "https://rtcbot.dev/tommaselli", data=json.dumps(localDescription)
         ) as resp:
             response = await resp.json()
             await conn.setRemoteDescription(response)
