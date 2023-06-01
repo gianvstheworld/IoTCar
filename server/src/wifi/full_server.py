@@ -30,7 +30,6 @@ async def connect():
         print("Had conn error", conn.error)
     print("\n\n\nConnection ready!\n\n\n")
     conn.put_nowait("Hello! 123")
-    conn.put_nowait("eval(\"document.querySelector('h1').innerText = 'TESTE'\")")
 
 
 asyncio.ensure_future(connect())
