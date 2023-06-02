@@ -28,7 +28,9 @@ class ObjectDetection:
         Loads Yolo5 model from pytorch hub.
         :return: Trained Pytorch model.
         """
-        model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
+        # model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
+        # choose a lighter model -> nano
+        model = torch.hub.load('ultralytics/yolov5', 'yolov5n', pretrained=True)
         return model
 
 

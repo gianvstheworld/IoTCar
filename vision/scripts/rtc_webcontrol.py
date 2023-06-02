@@ -1,14 +1,19 @@
 from aiohttp import web
 routes = web.RouteTableDef()
 
-from rtcbot import RTCConnection, CVCamera, CVDisplay, getRTCBotJS
-camera = CVCamera()
-display = CVDisplay()
+from rtcbot import RTCConnection, CVCamera, getRTCBotJS
+cam = CVCamera()
 
 import cv2
+import sys
+#sys.path.append('../../vision/scripts')
+# from img_detect import ObjectDetection
+
+# detect = ObjectDetection()
+# detect()
 
 conn = RTCConnection()
-conn.video.putSubscription(camera)
+conn.video.putSubscription(cam)
 
 keystates = {"w": False, "a": False, "s": False, "d": False}
 
@@ -28,8 +33,7 @@ def onMessage(m):
             "leftright": keystates["d"] * 1 - keystates["a"] * 1,
         })
 
-
-@camera.subscribe
+@cam.subscribe
 def onFrame(frame):
     bwframe = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     display.put_nowait(bwframe)
@@ -65,4 +69,4 @@ async def cleanup(app=None):
 app = web.Application()
 app.add_routes(routes)
 app.on_shutdown.append(cleanup)
-web.run_app(app, port=8080)
+web.run_app(app, port=1401)
