@@ -4,6 +4,8 @@ routes = web.RouteTableDef()
 from rtcbot import RTCConnection, CVCamera, getRTCBotJS
 cam = CVCamera()
 
+from ClassDetection import ObjectDetection
+
 # For this example, we use just one global connection
 conn = RTCConnection()
 conn.video.putSubscription(cam)
