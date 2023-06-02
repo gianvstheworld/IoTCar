@@ -1,19 +1,15 @@
 from aiohttp import web
 routes = web.RouteTableDef()
 
-from rtcbot import RTCConnection, CVCamera, getRTCBotJS
-cam = CVCamera()
+from rtcbot import RTCConnection, CVCamera, CVDisplay, getRTCBotJS
 
 import cv2
 import sys
-#sys.path.append('../../vision/scripts')
-# from img_detect import ObjectDetection
 
-# detect = ObjectDetection()
-# detect()
+camera = CVCamera()
 
 conn = RTCConnection()
-conn.video.putSubscription(cam)
+conn.video.putSubscription(camera)
 
 keystates = {"w": False, "a": False, "s": False, "d": False}
 
@@ -32,11 +28,6 @@ def onMessage(m):
             "forward": keystates["w"] * 1 - keystates["s"] * 1,
             "leftright": keystates["d"] * 1 - keystates["a"] * 1,
         })
-
-@cam.subscribe
-def onFrame(frame):
-    bwframe = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    display.put_nowait(bwframe)
 
 # Serve the RTCBot javascript library at /rtcbot.js
 @routes.get("/rtcbot.js")
@@ -69,4 +60,4 @@ async def cleanup(app=None):
 app = web.Application()
 app.add_routes(routes)
 app.on_shutdown.append(cleanup)
-web.run_app(app, port=1401)
+web.run_app(app, port=8080)
