@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 # import pafy
 import time
-
+import sys
 
 class ObjectDetection:
     """
@@ -84,24 +84,53 @@ class ObjectDetection:
         and write the output into a new file.
         :return: void
         """
-        cap = cv2.VideoCapture(0)
 
-        while cap.isOpened():
-            
-            start_time = time.perf_counter()
-            ret, frame = cap.read()
-            if not ret:
-                break
-            results = self.score_frame(frame)
-            frame = self.plot_boxes(results, frame)
-            end_time = time.perf_counter()
-            fps = 1 / np.round(end_time - start_time, 3)
-            cv2.putText(frame, f'FPS: {int(fps)}', (15,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (100,200,100), 2)
-            cv2.imshow("img", frame)
+        # if argument is 0, then read from webcam
+        # if argument is 1, then read from video file
 
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+        print('argv', sys.argv)
 
+        if len(sys.argv[1]) == 0:
+            print('webcam')
+            cap = cv2.VideoCapture(0)
+            while cap.isOpened():
+                start_time = time.perf_counter()
+                ret, frame = cap.read()
+                if not ret:
+                    break
+                results = self.score_frame(frame)
+                frame = self.plot_boxes(results, frame)
+                end_time = time.perf_counter()
+                fps = 1 / np.round(end_time - start_time, 3)
+                cv2.putText(frame, f'FPS: {int(fps)}', (15,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (100,200,100), 2)
+                cv2.imshow("img", frame)
+
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+        elif len(sys.argv[1]) == 1:
+            print('video')
+            cap = cv2.VideoCapture('test.mp4')  # Open the video file instead of camera
+
+            # Get video properties
+            fps = cap.get(cv2.CAP_PROP_FPS)
+            frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+            # Define the codec and create VideoWriter object
+            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+            output = cv2.VideoWriter('output.mp4', fourcc, fps, (frame_width, frame_height))
+
+            while cap.isOpened():
+                ret, frame = cap.read()
+                if not ret:
+                    break
+
+                # Process the frame
+                results = self.score_frame(frame)
+                frame = self.plot_boxes(results, frame)
+
+                # Write the frame to the output video
+                output.write(frame)
 
 # Create a new object and execute.
 detection = ObjectDetection()
