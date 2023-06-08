@@ -3,5 +3,9 @@
         "/home/tommaselli/catkin_ws/devel/lib/python3/dist-packages",
         "/opt/ros/noetic/lib/python3/dist-packages"
     ],
-    "cmake.sourceDirectory": "${workspaceFolder}/vision"
+    "cmake.sourceDirectory": "${workspaceFolder}/vision",
+    "python.analysis.extraPaths": [
+        "/home/tommaselli/catkin_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
 }
