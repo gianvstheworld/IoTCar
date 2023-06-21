@@ -22,7 +22,7 @@ const startVideoStreaming = async () => {
 // Envia uma mensagem para o servidor
 const sendMessage = async (message) => {
   try {
-    const response = await fetch('https://3.92.25.156/api', {
+    const response = await fetch('https://54.87.150.1/api', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
