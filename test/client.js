@@ -1,28 +1,44 @@
 const video = document.getElementById('video');
 const container = document.getElementById('container');
 
+ipadress = "54.87.150.1"
+urladress = "https://" + ipadress + "/api"
+
+
 // Captura de vídeo e envio contínuo para o servidor
 const startVideoStreaming = async () => {
-    try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-      video.srcObject = mediaStream;
-  
-      const mediaRecorder = new MediaRecorder(mediaStream);
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data && event.data.size > 0) {
-          socket.emit('stream', event.data);
-        }
-      };
-      mediaRecorder.start();
-    } catch (error) {
-      console.error('Erro ao acessar a webcam:', error);
-    }
-  };
+  try {
+    const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.srcObject = mediaStream;
+    const mediaRecorder = new MediaRecorder(mediaStream);
+    const chunks = []; // Array para armazenar os pedaços do vídeo
 
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data && event.data.size > 0) {
+        chunks.push(event.data);
+      }
+    };
+
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(chunks, { type: 'video/webm' });
+      socket.emit('stream', blob); // Enviar o blob do vídeo pelo socket
+      chunks.length = 0; // Limpar o array de pedaços do vídeo
+    };
+
+    mediaRecorder.start();
+
+    // Parar o streaming de vídeo quando o usuário fechar a página
+    window.addEventListener('beforeunload', () => {
+      mediaRecorder.stop();
+    });
+  } catch (error) {
+    console.error('Erro ao acessar a webcam:', error);
+  }
+};
 // Envia uma mensagem para o servidor
 const sendMessage = async (message) => {
   try {
-    const response = await fetch('https://54.87.150.1/api', {
+    const response = await fetch(urladress, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -51,6 +67,9 @@ btn.addEventListener('click', () => {
     sendMessage(message);
   }
 });
+
+// Inicialização do Socket.IO no cliente
+const socket = io(urladress);
 
 // Evento para iniciar o streaming de vídeo ao clicar no botão
 const startStreamingBtn = document.getElementById('start-streaming-btn');
