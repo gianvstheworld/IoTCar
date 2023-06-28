@@ -1,4 +1,4 @@
-/vision/yolo5
-/vision/venv
+/vision/PythonVersion/yolo5
+/vision/PythonVersion/venv
 
 build/
