@@ -1,3 +1,5 @@
+//TODO: Testar modelo melhor
+
 // Função para carregar o modelo COCO-SSD
 async function loadModel() {
     const model = await cocoSsd.load();
