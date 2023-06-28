@@ -1,7 +1,7 @@
 const video = document.getElementById('video');
 const container = document.getElementById('container');
 
-ipadress = "54.87.150.1"
+ipadress = "54.174.214.53"
 urladress = "https://" + ipadress + "/api"
 
 
