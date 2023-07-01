@@ -13,7 +13,8 @@
 <body>
     <div>
         <h1>IoT Car</h1>
-        <video id="video" autoplay></video>
+        <video id="video" width="640" height="480" autoplay></video>
+        <canvas id="canvas" width="640" height="480"></canvas>
         <p id="link"></p>
         <button id="btn">Send Message</button>
         <button id="start-streaming-btn">Start Streaming</button>
@@ -25,6 +26,8 @@
     // Iniciar streaming de vídeo ao carregar a página
     // window.addEventListener('DOMContentLoaded', startVideoStreaming); 
     </script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script> -->
     <script src="./client.js"></script>
 </body>
 

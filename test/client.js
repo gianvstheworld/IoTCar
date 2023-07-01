@@ -4,6 +4,105 @@ const container = document.getElementById('container');
 ipadress = "34.234.79.32"
 urladress = "https://" + ipadress + "/api"
 
+// ######################### OBJECT DETECTION #######################
+// ##################################################################
+
+
+// Função para carregar o modelo COCO-SSD
+async function loadModel() {
+  const model = await cocoSsd.load();
+  return model;
+}
+
+
+// Função para detectar objetos em um quadro de vídeo
+async function detectObjects(video, model) {
+  const predictions = await model.detect(video);
+  return predictions;
+}
+
+// Função para desenhar as detecções no canvas
+function drawBoundingBoxes(predictions, canvas) {
+  const context = canvas.getContext('2d');
+  const videoElement = document.getElementById('video');
+  const fontSize = 16
+  const font = `${fontSize}px Arial`;
+  // Define uma matriz de cores
+  const colors = ['red', 'blue', 'green', 'orange', 'purple', 'pink'];
+  // Mapeia os objetos detectados para um ID único
+  const objectMap = new Map();
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  // Desenha a imagem da câmera
+  context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+  predictions.forEach((prediction, index) => {
+      const objectId = prediction.class;
+      // Verifica se o objeto já foi mapeado
+      if (!objectMap.has(objectId)) {
+          // Obtém a cor correspondente ao próximo índice disponível
+          const color = colors[objectMap.size % colors.length];
+          // Mapeia o objeto ao seu ID e à cor correspondente
+          objectMap.set(objectId, color);
+      }
+      const color = objectMap.get(objectId);
+      context.beginPath();
+      context.lineWidth = '3';
+      context.strokeStyle = color;
+      context.fillStyle = color;
+      context.rect(
+          prediction.bbox[0],
+          prediction.bbox[1],
+          prediction.bbox[2],
+          prediction.bbox[3]
+      );
+      context.font = font;
+      // Desenha a caixa de fundo para o texto
+      const textWidth = context.measureText(prediction.class).width;
+      const textHeight = fontSize + 10;
+      context.fillRect(
+          prediction.bbox[0],
+          prediction.bbox[1] > textHeight ? prediction.bbox[1] - textHeight : prediction.bbox[1] - 2 * textHeight,
+          textWidth + 10,
+          textHeight
+      );
+      // Define a cor do texto como branco
+      context.fillStyle = 'white';
+      context.fillText(
+          `${prediction.class} (${Math.round(prediction.score * 100)}%)`,
+          prediction.bbox[0],
+          prediction.bbox[1] > fontSize ? prediction.bbox[1] - 5 : fontSize
+      );
+      context.stroke();
+      context.closePath();
+  });
+}
+
+// ##################################################################
+
+async function startObjectDetection(videoElement, canvasElement) {
+  const model = await loadModel();
+
+  const width = videoElement.videoWidth;
+  const height = videoElement.videoHeight;
+  canvasElement.width = width;
+  canvasElement.height = height;
+  const context = canvasElement.getContext('2d');
+
+  setInterval(async () => {
+      context.drawImage(videoElement, 0, 0, width, height);
+      const predictions = await detectObjects(videoElement, model);
+      drawBoundingBoxes(predictions, canvasElement);
+  }, 1000 / 30); // Executa a detecção a cada 30 quadros por segundo
+}
+
+async function runObjectDetection() {
+  const videoElement = document.getElementById('video');
+  const canvasElement = document.getElementById('canvas');
+  await startObjectDetection(videoElement, canvasElement);
+}
+
+// ##################################################################
+// ###################### START VIDEO STREAMING #####################
+
 // Captura de vídeo e envio contínuo para o servidor
 const startVideoStreaming = async () => {
   try {
@@ -36,16 +135,78 @@ const startVideoStreaming = async () => {
         console.log('Parando o streaming de vídeo...');
         mediaRecorder.stop();
     });
-    } catch (error) {
+  } catch (error) {
     console.error('Erro ao acessar a webcam:', error);
   }
 };
+
+// Evento para iniciar o streaming de vídeo ao clicar no botão
+const startStreamingBtn = document.getElementById('start-streaming-btn');
+startStreamingBtn.addEventListener('click', startVideoStreaming);
+
+// Criação e inicialização do Web Worker
+const worker = new Worker('objectDetectionWorker.js');
+
+// Enviar mensagem para o Web Worker para carregar o modelo
+worker.postMessage('loadModel');
+
+// Função para enviar os dados de pixel do vídeo para o Web Worker
+function sendVideoFrame(videoElement) {
+  const canvasElement = document.createElement('canvas');
+  const context = canvasElement.getContext('2d');
+  canvasElement.width = videoElement.videoWidth;
+  canvasElement.height = videoElement.videoHeight;
+  context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+  const imageData = context.getImageData(0, 0, canvasElement.width, canvasElement.height);
+
+  // Enviar os dados de pixel para o Web Worker
+  worker.postMessage(imageData);
+}
+
+// Receber os resultados da detecção de objetos do Web Worker
+worker.onmessage = (event) => {
+  const predictions = event.data;
+  // Desenhar as caixas delimitadoras no canvas
+  drawBoundingBoxes(predictions, canvasElement);
+};
+
+// Iniciar streaming de vídeo ao carregar a página
+window.addEventListener('DOMContentLoaded', () => {
+  const videoElement = document.getElementById('video');
+  const canvasElement = document.getElementById('canvas');
+
+  if (navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        videoElement.srcObject = stream;
+        videoElement.onloadedmetadata = () => {
+          videoElement.play();
+          const width = videoElement.videoWidth;
+          const height = videoElement.videoHeight;
+          canvasElement.width = width;
+          canvasElement.height = height;
+          const context = canvasElement.getContext('2d');
+
+          setInterval(() => {
+            context.drawImage(videoElement, 0, 0, width, height);
+            sendVideoFrame(videoElement);
+          }, 1000 / 30); // Executa a detecção a cada 30 quadros por segundo
+        };
+      })
+      .catch(error => {
+        console.error('Erro ao acessar a câmera:', error);
+      });
+  } else {
+    console.error('O getUserMedia não é suportado neste navegador.');
+  }
+});
+// ##################################################################
 
 // Envia uma mensagem para o servidor
 const sendMessage = async (message) => {
     try {
     const response = await fetch(urladress, {
-         method: 'POST',
+        method: 'POST',
         headers: {
         'Content-Type': 'application/json'
       },
@@ -104,9 +265,11 @@ textarea.addEventListener('keydown', (event) => {
   }
 });
 
+// ################### OBJECT DETECTION ###################
+
+
+// ########################################################
+
+
 // Inicialização do Socket.IO no cliente
 const socket = io(urladress);
-
-// Evento para iniciar o streaming de vídeo ao clicar no botão
-const startStreamingBtn = document.getElementById('start-streaming-btn');
-startStreamingBtn.addEventListener('click', startVideoStreaming);
