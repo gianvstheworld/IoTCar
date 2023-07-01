@@ -3,4 +3,4 @@
 
 build/
 vision/PythonVersion/yolov5
-    
+/test/src/node_modules
