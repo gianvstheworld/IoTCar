@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IoT Car</title>
+    <!-- import socket io with ajax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+</head>
+
+<body>
+    <div>
+        <h1>IoT Car</h1>
+        <video id="video" width="640" height="480" autoplay></video>
+        <canvas id="canvas" width="640" height="480"></canvas>
+        <p id="link"></p>
+        <button id="btn">Send Message</button>
+        <button id="start-streaming-btn">Start Streaming</button>
+    </div>
+    <div class="container" tabindex="0">
+        <textarea class="keyPress" placeholder="Digite os comandos das teclas aqui"></textarea>
+    </div>
+    <script>     
+    // Iniciar streaming de vídeo ao carregar a página
+    // window.addEventListener('DOMContentLoaded', startVideoStreaming); 
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <script src="./client.js"></script>
+</body>
+
+</html>
