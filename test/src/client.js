@@ -84,45 +84,89 @@ predictions.forEach((prediction, index) => {
 
 // Função principal para executar a detecção de objetos em tempo real
 async function runObjectDetection() {
-    const model = await loadModel();
+const model = await loadModel();
 
-    const videoUrl = 'https://54.160.224.46/index.html'; // URL do vídeo
-    const videoElement = document.createElement('video');
-    videoElement.src = videoUrl;
-    videoElement.crossOrigin = 'anonymous'; // Define a propriedade crossOrigin para contornar as restrições de segurança do navegador, se necessário
-    videoElement.autoplay = true;
-    videoElement.muted = true;
-    videoElement.style.display = 'none'; // Define o elemento de vídeo como oculto
-
-    // Espera o evento 'loadeddata' ser disparado quando o vídeo estiver pronto para ser reproduzido
-    await new Promise((resolve) => {
-    videoElement.addEventListener('loadeddata', resolve);
-    });
-
-    const width = videoElement.videoWidth;
-    const height = videoElement.videoHeight;
-    canvasElement.width = width;
-    canvasElement.height = height;
-    const context = canvasElement.getContext('2d');
-
-    const toggleDetectionHandler = () => {
-    isDetectionActive = !isDetectionActive; // Inverte o estado da detecção
-    };
-
-    // Adiciona um event listener para detectar quando o checkbox for alterado
-    toggleDetectionCheckbox.addEventListener('change', toggleDetectionHandler);
-
-    const detectObjectsLoop = async () => {
-    context.drawImage(videoElement, 0, 0, width, height);
-    if (isDetectionActive) {
-        const predictions = await detectObjects(videoElement, model);
-        drawBoundingBoxes(predictions, canvasElement);
+if (navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+        videoElement.srcObject = stream;
+        videoElement.onloadedmetadata = async () => {
+        videoElement.play();
+        const width = videoElement.videoWidth;
+        const height = videoElement.videoHeight;
+        canvasElement.width = width;
+        canvasElement.height = height;
+        const context = canvasElement.getContext('2d');
+        const toggleDetectionHandler = () => {
+            isDetectionActive = !isDetectionActive; // Inverte o estado da detecção
+        };
+    
+        // Adiciona um event listener para detectar quando o checkbox for alterado
+        toggleDetectionCheckbox.addEventListener('change', toggleDetectionHandler);
+    
+        const detectObjectsLoop = async () => {
+            context.drawImage(videoElement, 0, 0, width, height);
+            if (isDetectionActive) {
+            const predictions = await detectObjects(videoElement, model);
+            drawBoundingBoxes(predictions, canvasElement);
+            }
+            requestAnimationFrame(detectObjectsLoop); // Executa recursivamente a função para criar um loop contínuo
+        };
+    
+        detectObjectsLoop(); // Inicia o loop de detecção de objetos
+        };
+    })
+    .catch(error => {
+        console.error('Erro ao acessar a câmera:', error);
+        });
+    } else {
+        console.error('O getUserMedia não é suportado neste navegador.');
+        }
     }
-    requestAnimationFrame(detectObjectsLoop); // Executa recursivamente a função para criar um loop contínuo
-    };
 
-    detectObjectsLoop(); // Inicia o loop de detecção de objetos
-}
+    // async function runObjectDetection() {
+    //     const model = await loadModel();
+    
+    //     const videoUrl = 'https://34.230.31.207/index.html'; // URL do vídeo
+    //     const videoElement = document.createElement('video');
+    //     videoElement.src = videoUrl;
+    //     videoElement.crossOrigin = 'anonymous'; // Define a propriedade crossOrigin para contornar as restrições de segurança do navegador, se necessário
+    //     videoElement.autoplay = true;
+    //     videoElement.muted = true;
+    //     videoElement.style.display = 'none'; // Define o elemento de vídeo como oculto
+    
+    //     // Espera o evento 'loadeddata' ser disparado quando o vídeo estiver pronto para ser reproduzido
+    //     await new Promise((resolve) => {
+    //     videoElement.addEventListener('loadeddata', resolve);
+    //     });
+    
+    //     const width = videoElement.videoWidth;
+    //     const height = videoElement.videoHeight;
+    //     canvasElement.width = width;
+    //     canvasElement.height = height;
+    //     const context = canvasElement.getContext('2d');
+    
+    //     const toggleDetectionHandler = () => {
+    //     isDetectionActive = !isDetectionActive; // Inverte o estado da detecção
+    //     };
+    
+    //     // Adiciona um event listener para detectar quando o checkbox for alterado
+    //     toggleDetectionCheckbox.addEventListener('change', toggleDetectionHandler);
+    
+    //     const detectObjectsLoop = async () => {
+    //     context.drawImage(videoElement, 0, 0, width, height);
+    //     if (isDetectionActive) {
+    //         const predictions = await detectObjects(videoElement, model);
+    //         drawBoundingBoxes(predictions, canvasElement);
+    //     }
+    //     requestAnimationFrame(detectObjectsLoop); // Executa recursivamente a função para criar um loop contínuo
+    //     };
+    
+    //     detectObjectsLoop(); // Inicia o loop de detecção de objetos
+    // }
+
+
+
 
 // Executa a função principal ao carregar a página
 document.addEventListener('DOMContentLoaded', runObjectDetection);
