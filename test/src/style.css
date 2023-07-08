@@ -4,12 +4,136 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
 
 
-body{
+/* body{
     margin: 0;
     box-sizing: border-box;
     font-family: "Poppins";
     background-color: #1a1a1a;
+} */
+
+body {
+    background-size: 300% 700%;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins";
+    background-image: linear-gradient(-45deg, black 0%, rgb(7, 7, 7) 25%, rgb(31, 31, 31) 51%, rgb(64, 64, 64) 100%);
+    -webkit-animation: AnimateBG 20s ease infinite;
+            animation: AnimateBG 20s ease infinite;
 }
+
+@-webkit-keyframes AnimateBG {
+    0% {
+    background-position: 0% 50%;
+    }
+    50% {
+    background-position: 100% 50%;
+    }
+    100% {
+    background-position: 0% 50%;
+    }
+}
+
+@keyframes AnimateBG {
+    0% {
+    background-position: 0% 50%;
+    }
+    50% {
+    background-position: 100% 50%;
+    }
+    100% {
+    background-position: 0% 50%;
+    }
+}
+
+@keyframes wave-animation {
+    0% {
+    background-position: 0% 50%;
+    }
+    50% {
+    background-position: 100% 50%;
+    }
+    100% {
+    background-position: 0% 50%;
+    }
+}
+
+/* ================================== */
+/* ============ MODAL =============== */
+
+.blur-background {
+    filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.5); /* Ajuste a cor e a opacidade do overlay */
+}
+
+.modal__img {
+    max-width:60%;
+    height:auto;
+    display:block;
+}
+
+.modal {
+    z-index: 999;
+    max-width:700px;
+    width:85%;
+    position: fixed;
+    top:50%;
+    background-color: rgba(0,0,0,0.3);
+    left:50%;
+    transform: translate(-50%,-50%);
+    border-radius: 5px;
+    background:#575757;
+    display: none;
+}
+
+.modal.show{display:block}
+
+#close {
+    cursor:pointer;
+    color:white;
+    /* exra bold */
+    font-weight: 3000;
+    position:absolute;
+    top:0;
+    font-size:25px;
+    right:0;
+    padding:0.4rem;
+    margin-right: 10px;
+    z-index: 999;
+}
+
+.modal__title{font-size: 2.5rem;}
+.modal__title span{display: block;font-weight: 400;}
+.modal__paragraph{font-size: 16px;font-weight: 400;}
+
+.modal__button {
+    z-index: 999;
+    background-color:#0a9396;
+    border:none;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius:5px;
+    box-shadow: 2px 2px 12px rgba(0,0,0,0.2);
+    transition: 0.3s background-color ease-in-out;
+}
+
+.modal__button:hover{background-color:#0a9372;}
+main{text-align: center;}
+
+.modal__container {
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.no-display{
+    display: none;
+}
+
+/* ================================== */
+
 
 #bars{
     display: flex;

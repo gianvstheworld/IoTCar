@@ -5,7 +5,7 @@ const container = document.getElementById('pedal_listener');
 // Envia um comando para o servidor
 container.addEventListener('keydown', async (event) => {
     const key = event.key.toLowerCase();
-    if (key === 'w' || key === 's' || key === 'a' || key === 'd') {
+    if (key === 'arrowup' || key === 'arrowdown' || key === 'arrowleft' || key === 'arrowright'){
         console.log('Tecla pressionada:', key);
     }
 });
