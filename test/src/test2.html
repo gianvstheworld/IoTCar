@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Exemplo de reprodução de streaming de vídeo</title>
+  <link href="https://vjs.zencdn.net/7.15.0/video-js.css" rel="stylesheet">
+</head>
+<body>
+  <video id="meu-video" class="video-js vjs-default-skin" controls autoplay></video>
+
+  <script>
+    function loadScript(url, callback) {
+      var script = document.createElement('script');
+      script.src = url;
+      script.onload = callback;
+      document.body.appendChild(script);
+    }
+
+    loadScript("https://vjs.zencdn.net/7.15.0/video.js", function() {
+      var player = videojs('meu-video');
+      player.src({
+        type: 'video/mp4',
+        src: 'https://50.17.88.134/index.html'
+      });
+    });
+  </script>
+</body>
+</html>
