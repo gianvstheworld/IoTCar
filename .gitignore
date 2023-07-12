@@ -4,3 +4,6 @@
 build/
 vision/PythonVersion/yolov5
 /test/src/node_modules
+node_modules
+Deprecated/vision/PythonVersion/
+Deprecated/CodigoTestearduinoIOT/
