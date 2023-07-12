@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 VIDSOURCE="/dev/video0"  # Caminho para o dispositivo de vídeo USB
