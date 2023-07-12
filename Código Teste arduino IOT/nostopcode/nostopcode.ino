@@ -52,41 +52,23 @@ void loop() {
         digitalWrite(forwardEnablePin, HIGH); // Ativa o Forward_Enable
         digitalWrite(backwardEnablePin, HIGH); // Ativa o Backward_Enable
         
-        // Controle de movimento para frente e para trás
-        if (forward == 1 && backward == 0) {
-          if (motorstate == -1 || motorstate == 0) {
-            motorstate++;
-          }
+if (forward == 1 && backward == 0) {
+  
 
-          if (motorstate > 0) {
-            analogWrite(forwardPWMPin, speed_forward); // Define a velocidade do PWM Forward
-            analogWrite(backwardPWMPin, 0); // Define a velocidade do PWM Backward
-          }
-          else {
-            analogWrite(forwardPWMPin, 0); // Define a velocidade do PWM Forward
-            analogWrite(backwardPWMPin, 0); // Define a velocidade do PWM Backward
-          }
-        } 
-        else if (forward == 0 && backward == 1) {
-          if (motorstate == 1 || motorstate == 0) {
-            motorstate--;
-          }
-          if (motorstate < 0) {
-            analogWrite(forwardPWMPin, 0); // Define a velocidade do PWM Forward
-            analogWrite(backwardPWMPin, speed_backward); // Define a velocidade do PWM Backward
-          } 
-          else {
-            analogWrite(forwardPWMPin, 0); // Define a velocidade do PWM Forward
-            analogWrite(backwardPWMPin, 0); // Define a velocidade do PWM Backward
-          }
-        } 
-        else {
-          analogWrite(forwardPWMPin, 0); // Define a velocidade do PWM Forward
-          analogWrite(backwardPWMPin, 0); // Define a velocidade do PWM Backward
-        }
+    analogWrite(forwardPWMPin, speed_forward); // Define a velocidade do PWM Forward
+    analogWrite(backwardPWMPin, 0); // Define a velocidade do PWM Backward
+}
+ else if (forward == 0 && backward == 1) {
+
+    analogWrite(forwardPWMPin, 0); // Define a velocidade do PWM Forward
+    analogWrite(backwardPWMPin, speed_backward); // Define a velocidade do PWM Backward
+  } else {
+  analogWrite(forwardPWMPin, 0); // Define a velocidade do PWM Forward
+  analogWrite(backwardPWMPin, 0); // Define a velocidade do PWM Backward
+  }
+
         
-        // Controle de direção do servo
-        if (left == 1 && right == 0) {
+      if (left == 1 && right == 0) {
           if (count_left < 2) {
             count_left++;
             if (count_right > 0) {
@@ -95,8 +77,7 @@ void loop() {
           }
           angle = steer_0 - count_left * add_steer;
           servo.write(angle);
-        } 
-        else if (left == 0 && right == 1) {
+        } else if (left == 0 && right == 1) {
           if (count_right < 2) {
             count_right++;
             if (count_left > 0) {
@@ -105,8 +86,7 @@ void loop() {
           }
           angle = steer_0 + count_right * add_steer;
           servo.write(angle);
-        } 
-        else {
+        } else {
           servo.write(angle);
         }
         
@@ -119,13 +99,11 @@ void loop() {
         Serial.print(left);
         Serial.print("\tRight: ");
         Serial.println(right);
-      } 
-      else {
+      } else {
         // Valores fora da faixa permitida
         Serial.println("Valores inválidos!");
       }
-    } 
-    else {
+    } else {
       // Entrada inválida
       Serial.println("Entrada inválida!");
     }
