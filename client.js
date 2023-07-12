@@ -1,5 +1,8 @@
 const io = require('socket.io-client');
-const SerialPort = require('serialport');
+const { SerialPort, ReadlineParser } = require('serialport')
+
+const port = new SerialPort({path: '/dev/ttyACM0', baudRate: 9600 });
+const parser = new ReadlineParser();
 
 const socket = io('http://54.146.250.208:3000'); 
 
@@ -11,17 +14,20 @@ socket.on('connect', () => {
 
     let comandoSerial = '0000';
 
-    if (comando === 'w') {
+    if (comando === 'arrowup') {
       comandoSerial = '1000';
-    } else if (comando === 's') {
+    } else if (comando === 'arrowdown') {
       comandoSerial = '0100';
-    } else if (comando === 'a') {
+    } else if (comando === 'arrowleft') {
       comandoSerial = '0010';
-    } else if (comando === 'd') {
+    } else if (comando === 'arrowright') {
       comandoSerial = '0001';
     }
 
     enviarComandoSerial(comandoSerial);
+
+    port.pipe(parser);
+    parser.on('data', console.log);
   });
 });
 
@@ -30,13 +36,10 @@ socket.on('disconnect', () => {
 });
 
 function enviarComandoSerial(comando) {
-  const port = new SerialPort('/dev/ttyACM0', { baudRate: 9600 }); 
-  port.write(comando, (err) => {
-    if (err) {
-      console.error('Erro ao enviar comando:', err);
-    } else {
+    port.write(comando, (err) => {
+      if (err) {
+        return console.error('Erro ao enviar comando:', err.message);
+      }
       console.log('Comando enviado:', comando);
-    }
-    port.close();
-  });
-}
+    });
+  }
