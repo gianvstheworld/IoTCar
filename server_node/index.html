@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>SEL0373- IoT Car</title>
+        <link rel="stylesheet" href="./font_awesome/css/all.min.css">
+        <link rel="stylesheet" href="./style.css">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+    </head>
+
+    <body >
+    <div class="modal" id="modal">
+        <div class='modal__container'>
+            <img class="modal__img" src="https://github.com/gianvstheworld/IoTCar/blob/main/assets/frontcar_sb.png?raw=true"></img>
+            <div class="modal__content">
+                <h1 class="modal__title">CONECTE-SE...<h1>
+                <p class="modal__paragraph">Garanta que o IoT Car esteja conectado e o servidor esteja funcionando para que todas as conexões sejam estabelecidas!</p>
+            </div>
+            <div id="close" class="close"> x </div>
+        </div>
+        </div>
+        <div id="page">
+        <!-- TOPBAR -->
+        <nav id="topbar">
+            <p>SEL0373- IoT Car</p>
+        </nav>
+        <!-- BARS -->
+        <div id="bars">
+            <!-- LEFT BAR -->
+            <nav id="leftbar" class="fpv__instructions">
+                <div class="fpv__instructions_title"> Basic Commands </div>
+                <!-- ARROWS -->
+                <div class="fpv__box arrows_box">
+                <div class="fpv__header">
+                        <div> Forth </div> <div> Back </div> <div> Right </div> <div> Left </div>
+                    </div>
+                    <div class="fpv__keys arrows__keys">
+                        <div style="transform: rotate(-90deg);"> > </div>
+                        <div style="transform: rotate(90deg);"> > </div>
+                        <div> > </div>
+                        <div style="transform: rotate(180deg);"> > </div>
+                    </div>
+                    <div class="fpv__divider"></div>
+                    <div class="fpv__content">
+                        <img src="https://github.com/gianvstheworld/IoTCar/blob/main/assets/fpv__arrows.png?raw=true" alt="Arrows Commands" class="wsad_content"></img>
+                        <img src="https://github.com/gianvstheworld/IoTCar/blob/main/assets/frontcar_sb.png?raw=true" alt="">
+                    </div>
+                </nav>
+        <div class="fpv__streaming">
+            <!-- STREAMING -->
+            <div class="fpv__streaming_header">
+                <div class="fpv__disconnected-light" id="fpv_light"></div>
+                <div class="fpv__disconnected" id="fpv_disconnected"> Connected </div>
+                <div class="streaming-dropdown checkbox-container">
+                    <label for="toggleDetection" class="checkbox-label">Detection</label>
+                    <input type="checkbox" id="toggleDetection" class="checkbox-input">
+                </div>
+            </div>
+            <!-- proportion 640x480 -->
+            <video class="stream" id="video" muted nocontrols autoplay playsinline></video>
+            <canvas id="canvas"></canvas>
+            <div class="fpv__pedal">
+                <div id="pedal_feedback"> Listening to keyboard keys </div>
+                <div id="pedal_output"> Output</div>
+                <div id="pedal_listener" class="container" tabindex="0">
+                    <img src="https://github.com/gianvstheworld/IoTCar/blob/main/assets/mouse_rest.png?raw=true" alt="mouse_rest" id="pedal" class="pedal KeyPress" tabindex="0">
+                </div>
+            </div>
+        </div>
+        </div>
+    </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="./server.js"></script>
+    <script src="./streaming.js"></script>
+    <script src="./key.js"></script>
+    <script>
+        const closeBtn = document.getElementById('close');
+        const modalMenu = document.getElementById('modal');
+        const canvas = document.getElementById('canvas');
+        const page = document.getElementById('page');
+
+        setTimeout(() => {
+        modalMenu.classList.add('show');
+        page.classList.add('blur-background');
+        canvas.classList.add('no-display')
+        }, 3000);
+
+        closeBtn.addEventListener('click', () => {
+        modalMenu.classList.remove('show');
+        page.classList.remove('blur-background');
+        canvas.classList.remove('no-display')
+        });
+    </script>
+    <script>
+        var element = document.querySelector("#pedal_output");
+        var rectangle_window = document.querySelector("#pedal");
+        const pedal_feedback = document.querySelector('#pedal_feedback');
+        const fpv_disconnected = document.querySelector('#fpv_disconnected');
+        const fpv_light = document.querySelector('#fpv_light');
+        // When the user clicks on the div, add the "clicked" class to change the filter brightness
+        pedal.addEventListener('click', function() {
+            pedal.classList.add('clicked');
+            pedal_feedback.classList.add('clicked');
+        });
+
+        // When the user clicks anywhere outside the div, remove the "clicked" class to restore the original filter brightness
+        document.addEventListener('click', function(event) {
+            if (!pedal.contains(event.target)) {
+                pedal.classList.remove('clicked');
+                pedal_feedback.classList.remove('clicked');
+            }
+        });
+
+        var acceptedValues = ["KeyW", "KeyS", "KeyA", "KeyD",
+                            "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+    </script>
+</html>
