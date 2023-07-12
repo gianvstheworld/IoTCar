@@ -4,7 +4,7 @@ const { SerialPort, ReadlineParser } = require('serialport')
 const port = new SerialPort({path: '/dev/ttyACM0', baudRate: 9600 });
 const parser = new ReadlineParser();
 
-const socket = io('http://34.207.147.164:3000/'); 
+const socket = io('http://204.236.195.167:3000/'); 
 
 socket.on('connect', () => {
   console.log('Conectado ao servidor');
