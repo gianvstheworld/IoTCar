@@ -25,9 +25,6 @@ Para instalar o servidor, é necessário seguir os seguintes passos:
 
 ## Descrição do projeto
 
-Imagem demonstração do Fron-end:
-
-
 ![Imagem demonstração do Fron-end](../assets/fron-end.png)
 
 Do lado do servidor, toda essa parte do projeto é baseado em NodeJS. Para isso, utilizamos o Socket.io para a comunicação em tempo real com o cliente. Todas as rotas de comunicações são abertas com HTTP (sem segurança). 
