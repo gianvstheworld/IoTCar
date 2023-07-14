@@ -3,7 +3,7 @@
         "/home/tommaselli/catkin_ws/devel/lib/python3/dist-packages",
         "/opt/ros/noetic/lib/python3/dist-packages"
     ],
-    "cmake.sourceDirectory": "/home/tommaselli/catkin_ws/src/SEL0373/control",
+    "cmake.sourceDirectory": "/home/tommaselli/catkin_ws/src/SEL0373/Deprecated/control",
     "python.analysis.extraPaths": [
         "/home/tommaselli/catkin_ws/devel/lib/python3/dist-packages",
         "/opt/ros/noetic/lib/python3/dist-packages"
