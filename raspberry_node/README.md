@@ -4,8 +4,14 @@ Esse package faz referência ao Raspberry Pi que controla o robô. Para isso, fo
 
 ## Raspberry Pi
 
-<img src="../assets/micros2.jpeg" alt="Imagem dos micros" width="300">
-
+<div style="display: flex;">
+  <div style="flex: 50%; padding: 5px;">
+    <img src="../assets/micros2.jpeg" alt="Micros do Carro" style="width: 100%;">
+  </div>
+  <div style="flex: 50%; padding: 5px;">
+    <img src="../assets/carrinho.jpeg" alt="Robô montado" style="width: 100%;">
+  </div>
+</div>
 
 O microcomputador utilizado para o projeto é um Raspberry Pi 3 Model B com 4GB de RAM com sistema operacional Ubuntu Server. O micro foi embarcado no chassi do robô e conectado a um módulo de comunicação serial para se comunicar com o Arduino.
 
@@ -25,8 +31,6 @@ Para instalar o módulo da Raspberry Pi, é necessário seguir os seguintes pass
 
 
 ## Descrição do projeto
-
-![Imagem demonstração do Carro](../assets/carrinho.jpeg)
 
 Do lado da Raspberry Pi, toda essa parte do projeto é baseado em NodeJS. Para isso, utilizamos o Socket.io para a comunicação em tempo real com o cliente. Todas as rotas de comunicações são abertas com HTTP (sem segurança).
 
