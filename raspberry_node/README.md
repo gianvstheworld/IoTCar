@@ -13,6 +13,11 @@ Esse package faz referência ao Raspberry Pi que controla o robô. Para isso, fo
   </div>
 </div>
 
+| Microcontroladores | Montagem completa |
+| :-------:| :-------:|
+| ![Imagem 1](../assets/micros2.jpeg) | ![Imagem 2](../assets/carrinho.jpeg) |
+
+
 
 O microcomputador utilizado para o projeto é um Raspberry Pi 3 Model B com 4GB de RAM com sistema operacional Ubuntu Server. O micro foi embarcado no chassi do robô e conectado a um módulo de comunicação serial para se comunicar com o Arduino.
 
