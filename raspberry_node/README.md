@@ -7,7 +7,7 @@ Esse package faz referência ao Raspberry Pi que controla o robô. Para isso, fo
 
 | Microcontroladores | Montagem completa |
 | :-------:| :-------:|
-| ![Imagem 1](../assets/micros2.jpeg) | ![Imagem 2](../assets/carrinho.jpeg) |
+| ![Microcontroladores](../assets/micros3.jpeg) | ![Montagem](../assets/carrinho.jpeg) |
 
 
 
