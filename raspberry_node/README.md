@@ -4,14 +4,6 @@ Esse package faz referência ao Raspberry Pi que controla o robô. Para isso, fo
 
 ## Raspberry Pi
 
-<div style="display: flex;">
-  <div style="flex: 50%; padding: 5px;">
-    <img src="../assets/micros2.jpeg" alt="Micros do Carro" style="width: 100%;">
-  </div>
-  <div style="flex: 50%; padding: 5px;">
-    <img src="../assets/carrinho.jpeg" alt="Robô montado" style="width: 100%;">
-  </div>
-</div>
 
 | Microcontroladores | Montagem completa |
 | :-------:| :-------:|
